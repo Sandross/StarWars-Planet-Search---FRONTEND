@@ -20,7 +20,12 @@ export default function Header() {
         </label>
         <label htmlFor="column-filter">
           Coluna:
-          <select name="column-filter" id="column-filter" data-testid="column-filter">
+          <select
+            name="columnFilter"
+            id="column-filter"
+            data-testid="column-filter"
+            onChange={ (e) => filteredInformation(e) }
+          >
             <option value="population"> population</option>
             <option value="orbital_period">orbital_period</option>
             <option value="diameter">diameter</option>
@@ -31,9 +36,10 @@ export default function Header() {
         <label htmlFor="comparison-filter">
           Operador:
           <select
-            name="comparison-filter"
+            name="comparisonFilter"
             id="comparison-filter"
             data-testid="comparison-filter"
+            onChange={ (e) => filteredInformation(e) }
           >
             <option value="maior que"> maior que</option>
             <option value="menor que">menor que</option>
@@ -54,6 +60,7 @@ export default function Header() {
         <button
           type="button"
           data-testid="button-filter"
+          // onClick={ handleInputChange }
         >
           Filtrar
         </button>
