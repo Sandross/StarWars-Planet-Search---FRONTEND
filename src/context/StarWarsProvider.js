@@ -23,7 +23,9 @@ export default function StarWarsProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    const filterPlanets = data.filter(({ name }) => name.toLowerCase().includes(filterByName.name.toLowerCase()));
+    const filterPlanets = data.filter(
+      ({ name }) => name.toLowerCase().includes(filterByName.name.toLowerCase()),
+    );
     setFilteredByInput(filterPlanets);
   }, [data, filterByName]);
 
