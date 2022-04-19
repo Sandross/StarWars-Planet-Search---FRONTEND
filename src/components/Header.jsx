@@ -35,9 +35,9 @@ export default function Header() {
             id="comparison-filter"
             data-testid="comparison-filter"
           >
-            <option value="maior"> maior que</option>
-            <option value="menor">menor que</option>
-            <option value="igual">igual</option>
+            <option value="maior que"> maior que</option>
+            <option value="menor que">menor que</option>
+            <option value="igual a ">igual a</option>
           </select>
         </label>
         <label htmlFor="value-filter">
@@ -46,9 +46,9 @@ export default function Header() {
             name="numberInput"
             id="numberInput"
             type="number"
-            // value={ handleInput }
-            data-testid="name-filter"
-            // onChange={ (e) => filteredInformation(e) }
+            value={ handleInput }
+            data-testid="value-filter"
+            onChange={ (e) => filteredInformation(e) }
           />
         </label>
         <button

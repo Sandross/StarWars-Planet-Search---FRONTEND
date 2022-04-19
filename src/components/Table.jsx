@@ -4,6 +4,7 @@ import Header from './Header';
 
 export default function Table() {
   const { filterInput } = useContext(ISSContext);
+  console.log(filterInput);
 
   return (
     <div>
