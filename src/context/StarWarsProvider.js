@@ -9,7 +9,8 @@ export default function StarWarsProvider({ children }) {
   const [filterSelectedValue, setSelectedValue] = useState(
     { column: 'population', comparison: 'maior que', value: '0' },
   );
-  const [filterByNumericValues, setNumericValue] = useState([]);
+  // const [filterByNumericValues, setNumericValue] = useState([]);
+
   const apiRequest = async () => {
     const request = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
     const json = await request.json();
