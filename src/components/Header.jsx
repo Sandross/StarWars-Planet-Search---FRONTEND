@@ -8,7 +8,7 @@ export default function Header() {
       <h1> Star Wars Planets Search</h1>
       <form>
         <label htmlFor="nameInput">
-          Search by name:
+          Procure pelo nome:
           <input
             name="nameInput"
             id="nameInput"
@@ -19,15 +19,44 @@ export default function Header() {
           />
         </label>
         <label htmlFor="column-filter">
-          Choose an operator:
+          Coluna:
           <select name="column-filter" id="column-filter" data-testid="column-filter">
-            <option value="population">population</option>
+            <option value="population"> population</option>
             <option value="orbital_period">orbital_period</option>
             <option value="diameter">diameter</option>
             <option value="rotation_period">rotation_period</option>
             <option value="surface_water">surface_water</option>
           </select>
         </label>
+        <label htmlFor="comparison-filter">
+          Operador:
+          <select
+            name="comparison-filter"
+            id="comparison-filter"
+            data-testid="comparison-filter"
+          >
+            <option value="maior"> maior que</option>
+            <option value="menor">menor que</option>
+            <option value="igual">igual</option>
+          </select>
+        </label>
+        <label htmlFor="value-filter">
+          Número:
+          <input
+            name="numberInput"
+            id="numberInput"
+            type="number"
+            // value={ handleInput }
+            data-testid="name-filter"
+            // onChange={ (e) => filteredInformation(e) }
+          />
+        </label>
+        <button
+          type="button"
+          data-testid="button-filter"
+        >
+          Filtrar
+        </button>
       </form>
     </header>
   );
