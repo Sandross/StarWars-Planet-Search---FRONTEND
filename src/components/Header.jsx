@@ -2,7 +2,17 @@ import React, { useContext } from 'react';
 import ISSContext from '../context/ISSContext';
 
 export default function Header() {
-  const { handleInput, filteredInformation } = useContext(ISSContext);
+  const { handleInput,
+    filteredInformation,
+    filterSelectedValue,
+    setArrayOfFilters,
+  } = useContext(ISSContext);
+
+  const handleInputChange = () => {
+    setArrayOfFilters((prev) => [...prev, filterSelectedValue]);
+    console.log(handleInput);
+  };
+
   return (
     <header>
       <h1> Star Wars Planets Search</h1>
@@ -26,7 +36,7 @@ export default function Header() {
             data-testid="column-filter"
             onChange={ (e) => filteredInformation(e) }
           >
-            <option value="population"> population</option>
+            <option selected="selected" value="population">population</option>
             <option value="orbital_period">orbital_period</option>
             <option value="diameter">diameter</option>
             <option value="rotation_period">rotation_period</option>
@@ -41,9 +51,9 @@ export default function Header() {
             data-testid="comparison-filter"
             onChange={ (e) => filteredInformation(e) }
           >
-            <option value="maior que"> maior que</option>
+            <option selected="selected" value="maior que">maior que</option>
+            <option value="igual a">igual a</option>
             <option value="menor que">menor que</option>
-            <option value="igual a ">igual a</option>
           </select>
         </label>
         <label htmlFor="value-filter">
@@ -52,7 +62,7 @@ export default function Header() {
             name="numberInput"
             id="numberInput"
             type="number"
-            value={ handleInput }
+            value={ filterSelectedValue.value }
             data-testid="value-filter"
             onChange={ (e) => filteredInformation(e) }
           />
@@ -60,7 +70,7 @@ export default function Header() {
         <button
           type="button"
           data-testid="button-filter"
-          // onClick={ handleInputChange }
+          onClick={ () => handleInputChange() }
         >
           Filtrar
         </button>
