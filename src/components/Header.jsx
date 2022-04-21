@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import ISSContext from '../context/ISSContext';
 
 export default function Header() {
@@ -6,16 +6,52 @@ export default function Header() {
     filteredInformation,
     filterSelectedValue,
     setArrayOfFilters,
+    removeColumn,
+    arrayOfColumn,
   } = useContext(ISSContext);
+
+  const [click, setClick] = useState([]);
+
+  const excludeBtn = ({ target: { id } }) => {
+    console.log(id);
+    const newArray = click.filter((e) => e.column !== id);
+    setClick(newArray);
+    setArrayOfFilters(newArray);
+    console.log('Entrei');
+  };
 
   const handleInputChange = () => {
     setArrayOfFilters((prev) => [...prev, filterSelectedValue]);
-    console.log(handleInput);
+    setClick([...click, filterSelectedValue]);
+    removeColumn(filterSelectedValue.column);
   };
 
   return (
     <header>
       <h1> Star Wars Planets Search</h1>
+      {click && (
+        <div>
+          { click.map(({ column, comparison, value }) => (
+            <div key={ column }>
+              <p>
+                {column}
+                {' '}
+                {comparison}
+                {' '}
+                {value}
+              </p>
+              <button
+                type="button"
+                id={ column }
+                onClick={ (e) => excludeBtn(e) }
+              >
+                X
+
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
       <form>
         <label htmlFor="nameInput">
           Procure pelo nome:
@@ -36,11 +72,16 @@ export default function Header() {
             data-testid="column-filter"
             onChange={ (e) => filteredInformation(e) }
           >
-            <option selected="selected" value="population">population</option>
+            {arrayOfColumn.map((elem) => (
+              <option key={ elem } value={ elem }>
+                { elem }
+              </option>
+            ))}
+            {/* <option value="population">population</option>
             <option value="orbital_period">orbital_period</option>
             <option value="diameter">diameter</option>
             <option value="rotation_period">rotation_period</option>
-            <option value="surface_water">surface_water</option>
+            <option value="surface_water">surface_water</option> */}
           </select>
         </label>
         <label htmlFor="comparison-filter">
@@ -51,7 +92,7 @@ export default function Header() {
             data-testid="comparison-filter"
             onChange={ (e) => filteredInformation(e) }
           >
-            <option selected="selected" value="maior que">maior que</option>
+            <option value="maior que">maior que</option>
             <option value="igual a">igual a</option>
             <option value="menor que">menor que</option>
           </select>
@@ -70,7 +111,7 @@ export default function Header() {
         <button
           type="button"
           data-testid="button-filter"
-          onClick={ () => handleInputChange() }
+          onClick={ handleInputChange }
         >
           Filtrar
         </button>

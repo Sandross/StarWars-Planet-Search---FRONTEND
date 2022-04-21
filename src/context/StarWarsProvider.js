@@ -11,6 +11,8 @@ export default function StarWarsProvider({ children }) {
   const [filterSelectedValue, setSelectedValue] = useState(
     { column: 'population', comparison: 'maior que', value: '0' },
   );
+  const [arrayOfColumn, setArrayOfColumns] = useState(['population',
+    'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
   const [filterByNumericValues, setNumericValue] = useState([]);
 
   const apiRequest = async () => {
@@ -31,6 +33,13 @@ export default function StarWarsProvider({ children }) {
     return handleInput[name]();
   };
 
+  const removeColumn = (actualColumn) => {
+    const removeColumns = arrayOfColumn.filter(
+      (elem) => elem !== actualColumn,
+    );
+    setArrayOfColumns(removeColumns);
+  };
+
   const newI = () => setNumericValue({ ...filterByNumericValues, filterSelectedValue });
 
   useEffect(() => {
@@ -42,11 +51,9 @@ export default function StarWarsProvider({ children }) {
       ({ name }) => name.toLowerCase().includes(filterByName.name.toLowerCase()),
     );
     setFilteredByInput(filterPlanets);
-  }, [data, filterByName]);
+  }, [data, filterByName, arrayOfFilters]);
 
   useEffect(() => {
-    console.log(arrayOfFilters);
-    console.log(newArray);
     if (arrayOfFilters.length > 0) {
       arrayOfFilters.map((
         { value, comparison, column },
@@ -59,7 +66,7 @@ export default function StarWarsProvider({ children }) {
         return setFilteredByInput(handleComparison[comparison]);
       });
     }
-  }, [arrayOfFilters]);
+  }, [arrayOfFilters, filterSelectedValue, newArray]);
 
   const state = {
     filterByName,
@@ -70,7 +77,8 @@ export default function StarWarsProvider({ children }) {
     filterByNumericValues,
     setArrayOfFilters,
     arrayOfFilters,
-    newArray,
+    removeColumn,
+    arrayOfColumn,
   };
 
   return (
