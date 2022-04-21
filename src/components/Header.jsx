@@ -36,7 +36,7 @@ export default function Header() {
       {click && (
         <div>
           { click.map(({ column, comparison, value }) => (
-            <div key={ column }>
+            <div key={ column } data-testid="filter">
               <p>
                 {column}
                 {' '}

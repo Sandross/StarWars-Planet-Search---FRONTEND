@@ -3,7 +3,6 @@ import propTypes from 'prop-types';
 import ISSContext from './ISSContext';
 
 export default function StarWarsProvider({ children }) {
-  const [data, setData] = useState([]);
   const [filterByName, setFilteredByName] = useState({ name: '' });
   const [filterInput, setFilteredByInput] = useState([]);
   const [newArray, setNewArray] = useState([]);
@@ -19,7 +18,6 @@ export default function StarWarsProvider({ children }) {
   const apiRequest = async () => {
     const request = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
     const json = await request.json();
-    setData(json.results);
     setFilteredByInput(json.results);
     setNewArray(json.results);
   };
