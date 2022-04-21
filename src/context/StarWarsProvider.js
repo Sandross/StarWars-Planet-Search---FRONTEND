@@ -14,11 +14,13 @@ export default function StarWarsProvider({ children }) {
   const [arrayOfColumn, setArrayOfColumns] = useState(['population',
     'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
   const [filterByNumericValues, setNumericValue] = useState([]);
+  const [isRemoving, setRemoveSelected] = useState(false);
 
   const apiRequest = async () => {
     const request = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
     const json = await request.json();
     setData(json.results);
+    setFilteredByInput(json.results);
     setNewArray(json.results);
   };
   const filteredInformation = ({ target: { value, name } }) => {
@@ -34,6 +36,7 @@ export default function StarWarsProvider({ children }) {
   };
 
   const removeColumn = (actualColumn) => {
+    setRemoveSelected(true);
     const removeColumns = arrayOfColumn.filter(
       (elem) => elem !== actualColumn,
     );
@@ -47,21 +50,25 @@ export default function StarWarsProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    const filterPlanets = data.filter(
+    const filterSubject = isRemoving ? newArray : filterInput;
+    console.log(isRemoving);
+    const filterPlanets = filterSubject.filter(
       ({ name }) => name.toLowerCase().includes(filterByName.name.toLowerCase()),
     );
     setFilteredByInput(filterPlanets);
-  }, [data, filterByName, arrayOfFilters]);
+  }, [filterByName, arrayOfFilters]);
 
   useEffect(() => {
+    const filterSubject = isRemoving ? newArray : filterInput;
+    console.log(isRemoving);
     if (arrayOfFilters.length > 0) {
       arrayOfFilters.map((
         { value, comparison, column },
       ) => {
         const handleComparison = {
-          'maior que': () => newArray.filter((elem) => +elem[column] > +value),
-          'igual a': () => newArray.filter((elem) => +elem[column] === +value),
-          'menor que': () => newArray.filter((elem) => +elem[column] < +value),
+          'maior que': () => filterSubject.filter((elem) => +elem[column] > +value),
+          'igual a': () => filterSubject.filter((elem) => +elem[column] === +value),
+          'menor que': () => filterSubject.filter((elem) => +elem[column] < +value),
         };
         return setFilteredByInput(handleComparison[comparison]);
       });
@@ -78,7 +85,9 @@ export default function StarWarsProvider({ children }) {
     setArrayOfFilters,
     arrayOfFilters,
     removeColumn,
+    isRemoving,
     arrayOfColumn,
+    setRemoveSelected,
   };
 
   return (

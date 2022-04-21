@@ -8,22 +8,26 @@ export default function Header() {
     setArrayOfFilters,
     removeColumn,
     arrayOfColumn,
+    setRemoveSelected,
   } = useContext(ISSContext);
 
   const [click, setClick] = useState([]);
 
   const excludeBtn = ({ target: { id } }) => {
-    console.log(id);
+    setRemoveSelected(true);
     const newArray = click.filter((e) => e.column !== id);
     setClick(newArray);
     setArrayOfFilters(newArray);
-    console.log('Entrei');
   };
 
   const handleInputChange = () => {
-    setArrayOfFilters((prev) => [...prev, filterSelectedValue]);
+    setArrayOfFilters((prev) => {
+      console.log(prev);
+      return [...prev, filterSelectedValue];
+    });
     setClick([...click, filterSelectedValue]);
     removeColumn(filterSelectedValue.column);
+    setRemoveSelected(false);
   };
 
   return (
