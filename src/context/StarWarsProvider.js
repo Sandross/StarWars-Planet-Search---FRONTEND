@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import propTypes from 'prop-types';
 import ISSContext from './ISSContext';
 
@@ -21,7 +21,8 @@ export default function StarWarsProvider({ children }) {
     setFilteredByInput(json.results);
     setNewArray(json.results);
   };
-  const filteredInformation = ({ target: { value, name } }) => {
+
+  const filteredInformation = (({ target: { value, name } }) => {
     const handleInput = {
       nameInput: () => setFilteredByName({ name: value }),
       columnFilter: () => setSelectedValue({ ...filterSelectedValue, column: value }),
@@ -31,7 +32,15 @@ export default function StarWarsProvider({ children }) {
       numberInput: () => setSelectedValue({ ...filterSelectedValue, value }),
     };
     return handleInput[name]();
-  };
+  });
+  const columnRef = useRef(null);
+
+  useEffect(() => {
+    setSelectedValue(
+      { ...filterSelectedValue, column: columnRef.current.value },
+    );
+  }, [arrayOfFilters, columnRef]);
+  // Dica dada na mentoria individual com Ádran carnavales
 
   const removeColumn = (actualColumn) => {
     setRemoveSelected(true);
@@ -48,8 +57,7 @@ export default function StarWarsProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    const filterSubject = isRemoving ? newArray : filterInput;
-    console.log(isRemoving);
+    const filterSubject = !isRemoving ? filterInput : newArray;
     const filterPlanets = filterSubject.filter(
       ({ name }) => name.toLowerCase().includes(filterByName.name.toLowerCase()),
     );
@@ -58,7 +66,6 @@ export default function StarWarsProvider({ children }) {
 
   useEffect(() => {
     const filterSubject = isRemoving ? newArray : filterInput;
-    console.log(isRemoving);
     if (arrayOfFilters.length > 0) {
       arrayOfFilters.map((
         { value, comparison, column },
@@ -86,6 +93,8 @@ export default function StarWarsProvider({ children }) {
     isRemoving,
     arrayOfColumn,
     setRemoveSelected,
+    columnRef,
+    setArrayOfColumns,
   };
 
   return (

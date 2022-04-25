@@ -9,6 +9,8 @@ export default function Header() {
     removeColumn,
     arrayOfColumn,
     setRemoveSelected,
+    setArrayOfColumns,
+    columnRef,
   } = useContext(ISSContext);
 
   const [click, setClick] = useState([]);
@@ -18,6 +20,15 @@ export default function Header() {
     const newArray = click.filter((e) => e.column !== id);
     setClick(newArray);
     setArrayOfFilters(newArray);
+    setArrayOfColumns(((prev) => prev.filter(({ column }) => column !== id)));
+  };
+
+  const excludeAllBtn = () => {
+    setRemoveSelected(true);
+    setArrayOfFilters([]);
+    setArrayOfColumns(['population',
+      'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
+    setClick([]);
   };
 
   const handleInputChange = () => {
@@ -54,6 +65,15 @@ export default function Header() {
               </button>
             </div>
           ))}
+          <button
+            type="button"
+            id={ columnRef }
+            onClick={ () => excludeAllBtn() }
+            data-testid="button-remove-filters"
+          >
+            Remover todas filtragens
+
+          </button>
         </div>
       )}
       <form>
@@ -71,6 +91,7 @@ export default function Header() {
         <label htmlFor="column-filter">
           Coluna:
           <select
+            ref={ columnRef }
             name="columnFilter"
             id="column-filter"
             data-testid="column-filter"
@@ -80,6 +101,7 @@ export default function Header() {
               <option key={ elem } value={ elem }>
                 { elem }
               </option>
+
             ))}
             {/* <option value="population">population</option>
             <option value="orbital_period">orbital_period</option>
